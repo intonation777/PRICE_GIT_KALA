@@ -4,13 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#17506B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="لیست قیمت">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preload" href="fonts/Vazirmatn-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <title>لیست قیمت محصولات</title>
 <style>
+@font-face{
+  font-family:"Vazirmatn";
+  src:url("fonts/Vazirmatn-Variable.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+}
 :root{
   --bg:#EDF1F4; --surface:#FFFFFF; --ink:#14232E; --muted:#566673; --line:#D3DCE3;
   --accent:#17506B; --up:#B3261E; --down:#1B7F4B; --new:#17506B;
   --warn-bg:#FFF1CC; --warn-ink:#5C4300; --radius:10px;
-  --font:Vazirmatn,"IRANSans","Segoe UI",Tahoma,system-ui,sans-serif;
+  --font:"Vazirmatn","IRANSans","Segoe UI",Tahoma,system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root{
@@ -45,15 +58,32 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
 .brand[aria-selected="true"] .nm{font-weight:800}
 @media (prefers-reduced-motion:no-preference){.brand .logo{transition:outline-color .15s}}
 
-/* نوار ابزار */
-.bar{background:var(--bg);border-bottom:1px solid var(--line)}
-@media (min-width:681px){.bar{position:sticky;top:0;z-index:5}}
-.bar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:10px}
-.search{flex:1 1 260px;min-width:0}
+/* نوار جستجو (همیشه بالای صفحه می‌ماند) */
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-block:1px solid var(--line)}
+.bar .wrap{display:flex;gap:10px;align-items:center;padding-block:10px}
+.search{flex:1 1 auto;min-width:0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:12px 0}
+.actions .btn{height:40px}
+
+/* لیست قیمت‌های PDF */
+.cats{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.cats[hidden]{display:none}
+.cats summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+.cats summary::-webkit-details-marker{display:none}
+.cats summary::after{content:"";margin-inline-start:auto;width:8px;height:8px;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg)}
+.cats[open] summary::after{transform:rotate(-135deg)}
+.cats ul{list-style:none;margin:0;padding:0 14px 8px}
+.cats li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.cats .ct{flex:1 1 auto;min-width:0}
+.cats .ct b{display:block;font-weight:600;line-height:1.5}
+.cats .ct span{color:var(--muted);font-size:.84rem}
+.cats .dl{flex:0 0 auto;height:40px;padding:0 16px;display:inline-flex;align-items:center;border-radius:var(--radius);background:var(--accent);color:var(--on,var(--surface));font-weight:700;text-decoration:none}
+@media (max-width:420px){.cats .dl{padding:0 14px}}
 .search input{width:100%;height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink);font:inherit}
 .seg{display:flex;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
-.seg button{height:42px;padding:0 16px;border:0;background:none;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface);font-weight:700}
+.seg{flex:0 0 auto}
+.seg button{height:44px;padding:0 16px;border:0;background:none;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on,var(--surface));font-weight:700}
 .btn{height:44px;padding:0 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
 .btn[hidden]{display:none}
 .btn:hover{border-color:var(--accent)}
@@ -88,14 +118,17 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
   .tbl td.price{grid-column:1 / -1;padding-top:8px;border-top:1px solid var(--line);font-size:1.3rem}
   .tbl td.price::before{font-size:.74rem;font-weight:400}
   .tbl td.chg:empty{display:none}
-  .bar .wrap{gap:8px}
+  .bar .wrap{gap:8px;padding-block:8px}
+  .search input,.seg button{height:42px}
+  .seg button{padding:0 13px}
+  .actions .btn{flex:1 1 0;justify-content:center}
 }
 
 /* چاپ */
 @media print{
   :root{--bg:#fff;--surface:#fff;--ink:#000;--muted:#444;--line:#bbb}
   body{font-size:10pt}
-  .top .sub,.brands,.bar,.more,.banner,.foot .contact{display:none!important}
+  .top .sub,.brands,.bar,.more,.banner,.foot .contact,.noprint{display:none!important}
   .print-only{display:block;margin:0 0 6pt}
   .tbl{border-spacing:0}
   .tbl td{padding:5pt 8pt;border-radius:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -120,18 +153,27 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
   <div class="strip" id="brandTabs" role="tablist" aria-label="برندها"></div>
 </section>
 
+<div class="wrap noprint">
+  <div class="actions">
+    <button type="button" class="btn" id="printBtn">چاپ یا ذخیره PDF</button>
+    <a class="btn" id="callBtn" href="#" hidden>تماس</a>
+  </div>
+  <details class="cats" id="cats" hidden>
+    <summary id="catsTitle">دانلود لیست قیمت PDF</summary>
+    <ul id="catsList"></ul>
+  </details>
+</div>
+
 <div class="bar">
   <div class="wrap">
     <div class="search">
       <label class="sr" for="q">جستجو در کد و سایز</label>
-      <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="جستجوی کد یا سایز، مثلاً ۲۵ یا زانو">
+      <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="جستجوی کد یا سایز">
     </div>
     <div class="seg" role="group" aria-label="واحد قیمت">
       <button type="button" data-unit="rial" aria-pressed="true">ریال</button>
       <button type="button" data-unit="toman" aria-pressed="false">تومان</button>
     </div>
-    <button type="button" class="btn" id="printBtn">چاپ یا ذخیره PDF</button>
-    <a class="btn" id="callBtn" href="#" hidden>تماس</a>
   </div>
 </div>
 
@@ -148,7 +190,7 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
   var STEP = 150;
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat("fa-IR", { maximumFractionDigits: 1 });
-  var state = { data: null, all: [], brand: "all", q: "", unit: "rial", sort: null, dir: 1, limit: STEP, saved: STEP };
+  var state = { data: null, all: [], cats: [], brand: "all", q: "", unit: "rial", sort: null, dir: 1, limit: STEP, saved: STEP };
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -181,8 +223,30 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
     });
   }
 
+  function faDigits(s) { return String(s == null ? "" : s).replace(/\d/g, function (x) { return "۰۱۲۳۴۵۶۷۸۹".charAt(+x); }); }
+  function safeUrl(u) { return typeof u === "string" && /^(https?:\/\/|[\w.\-\/%]+$)/i.test(u.trim()) ? u.trim() : ""; }
+
+  function renderCats() {
+    var box = $("cats");
+    var list = state.cats.filter(function (c) {
+      return state.brand === "all" || c.brand_id == null || String(c.brand_id) === String(state.brand);
+    });
+    if (!list.length) { box.hidden = true; return; }
+    $("catsTitle").textContent = "دانلود لیست قیمت PDF (" + nf.format(list.length) + ")";
+    $("catsList").innerHTML = list.map(function (c) {
+      return '<li><div class="ct"><b>' + esc(c.title) + "</b>" +
+        (c.date ? "<span>تاریخ لیست: " + esc(faDigits(c.date)) + "</span>" : "") + "</div>" +
+        '<a class="dl" href="' + esc(safeUrl(c.url)) + '" target="_blank" rel="noopener" download>دانلود</a></li>';
+    }).join("");
+    box.hidden = false;
+  }
+
   function start() {
     getJSON("config.json").catch(function () { return {}; }).then(applyConfig);
+    getJSON("catalogs.json").catch(function () { return {}; }).then(function (c) {
+      state.cats = (c.items || []).filter(function (i) { return safeUrl(i.url); });
+      renderCats();
+    });
     getJSON("data/prices.json").then(function (d) {
       state.data = d;
       state.all = [];
@@ -337,8 +401,14 @@ h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
         b.setAttribute("aria-selected", b === t ? "true" : "false");
       });
       var b = state.data.brands.filter(function (x) { return String(x.id) === String(state.brand); })[0];
-      document.documentElement.style.setProperty("--accent", b ? b.color : "");
-      if (!b) document.documentElement.style.removeProperty("--accent");
+      if (b) {
+        document.documentElement.style.setProperty("--accent", b.color);
+        document.documentElement.style.setProperty("--on", lum(b.color) > 170 ? "#1F1F1F" : "#FFFFFF");
+      } else {
+        document.documentElement.style.removeProperty("--accent");
+        document.documentElement.style.removeProperty("--on");
+      }
+      renderCats();
       render();
     } else if (t.hasAttribute("data-unit")) {
       state.unit = t.getAttribute("data-unit");

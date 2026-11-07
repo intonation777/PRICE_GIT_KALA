@@ -1,0 +1,17 @@
+{
+  "name": "لیست قیمت محصولات",
+  "short_name": "لیست قیمت",
+  "description": "قیمت روز لوله و اتصالات، به‌روز هر روز",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EDF1F4",
+  "theme_color": "#17506B",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

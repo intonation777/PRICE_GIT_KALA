@@ -1,0 +1,14 @@
+{
+  "_راهنما": "برای هر لیست قیمت PDF مقدار url را بنویسید (مثلاً catalogs/newflex.pdf). فایل PDF را داخل پوشه docs/catalogs بگذارید. ردیف‌هایی که url ندارند در صفحه نشان داده نمی‌شوند.",
+  "items": [
+    { "title": "لیست قیمت نیوفلکس",              "brand_id": 7,    "date": "1405/08/13", "url": null },
+    { "title": "لیست قیمت آذین لوله",            "brand_id": 4,    "date": "1405/08/13", "url": null },
+    { "title": "لیست قیمت نیوپایپ",              "brand_id": 5,    "date": "1405/08/13", "url": null },
+    { "title": "لیست قیمت مولتی پایپ",           "brand_id": 14,   "date": "1405/08/13", "url": null },
+    { "title": "لیست قیمت دینا پلیمر",           "brand_id": 6,    "date": "1405/07/18", "url": null },
+    { "title": "لیست قیمت سپهرفوم",              "brand_id": 8,    "date": "1405/08/02", "url": null },
+    { "title": "لیست قیمت گرمایشی",              "brand_id": null, "date": "1405/08/05", "url": null },
+    { "title": "لیست قیمت SGP ابزار",            "brand_id": null, "date": "1405/07/09", "url": null },
+    { "title": "لیست قیمت SGP ملزومات فلزی و پلیمری", "brand_id": null, "date": "1405/08/13", "url": null }
+  ]
+}
