@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>لیست قیمت محصولات</title>
+<style>
+:root{
+  --bg:#EDF1F4; --surface:#FFFFFF; --ink:#14232E; --muted:#566673; --line:#D3DCE3;
+  --accent:#17506B; --up:#B3261E; --down:#1B7F4B; --new:#17506B;
+  --warn-bg:#FFF1CC; --warn-ink:#5C4300; --radius:10px;
+  --font:Vazirmatn,"IRANSans","Segoe UI",Tahoma,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0F1A22; --surface:#16252F; --ink:#E7EEF3; --muted:#9FB0BC; --line:#2A3C48;
+    --accent:#7CC4E4; --up:#FF9A90; --down:#74D6A0; --new:#7CC4E4;
+    --warn-bg:#3A3000; --warn-ink:#FFE08A;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 var(--font);font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font:inherit;color:inherit}
+
+/* سربرگ */
+.top{padding-block:28px 14px}
+h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.3}
+.sub{margin:4px 0 0;color:var(--muted)}
+.updated{margin:10px 0 0;font-size:.92rem}
+.updated b{font-weight:700}
+.banner{margin:8px 0 0;padding:10px 14px;border-radius:var(--radius);background:var(--warn-bg);color:var(--warn-ink);font-size:.92rem}
+
+/* برندها */
+.strip{display:flex;gap:12px;overflow-x:auto;padding:8px 4px 12px;scroll-snap-type:x proximity}
+.brand{flex:0 0 auto;width:98px;padding:0;border:0;background:none;cursor:pointer;text-align:center;scroll-snap-align:start}
+.brand .logo{height:60px;border-radius:var(--radius);display:grid;place-items:center;background:var(--b,var(--surface));color:var(--bt,var(--ink));outline:3px solid transparent;outline-offset:2px;overflow:hidden;font-weight:700;font-size:.9rem;border:1px solid var(--line)}
+.brand img{max-width:82%;max-height:70%;object-fit:contain}
+.brand .nm{display:block;margin-top:6px;font-size:.82rem;font-weight:500;line-height:1.4}
+.brand[aria-selected="true"] .logo{outline-color:var(--c,var(--accent))}
+.brand[aria-selected="true"] .nm{font-weight:800}
+@media (prefers-reduced-motion:no-preference){.brand .logo{transition:outline-color .15s}}
+
+/* نوار ابزار */
+.bar{background:var(--bg);border-bottom:1px solid var(--line)}
+@media (min-width:681px){.bar{position:sticky;top:0;z-index:5}}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:10px}
+.search{flex:1 1 260px;min-width:0}
+.search input{width:100%;height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink);font:inherit}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.seg button{height:42px;padding:0 16px;border:0;background:none;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface);font-weight:700}
+.btn{height:44px;padding:0 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn[hidden]{display:none}
+.btn:hover{border-color:var(--accent)}
+
+/* جدول */
+.count{margin:16px 0 4px;color:var(--muted);font-size:.92rem}
+.tbl{width:100%;border-collapse:separate;border-spacing:0 6px}
+.tbl th{padding:6px 14px;text-align:start;font-weight:600;font-size:.82rem;color:var(--muted);white-space:nowrap}
+.tbl th .sortbtn{border:0;background:none;padding:0;cursor:pointer;color:inherit;font-weight:inherit}
+.tbl th[aria-sort="ascending"] .sortbtn::after{content:" ▲"}
+.tbl th[aria-sort="descending"] .sortbtn::after{content:" ▼"}
+.tbl td{padding:12px 14px;background:var(--surface);border-block:1px solid var(--line)}
+.tbl td.edge{border-inline-start:5px solid var(--row,var(--accent));border-start-start-radius:var(--radius);border-end-start-radius:var(--radius)}
+.tbl td.last{border-inline-end:1px solid var(--line);border-start-end-radius:var(--radius);border-end-end-radius:var(--radius)}
+.tbl .code{font-weight:700}
+.tbl .price{font-weight:800;font-size:1.12rem;white-space:nowrap}
+.tbl .price small{font-weight:400;color:var(--muted);font-size:.78rem;margin-inline-start:4px}
+.chip{display:inline-block;padding:1px 9px;border-radius:99px;font-size:.8rem;font-weight:700;border:1px solid currentColor;white-space:nowrap}
+.chip.up{color:var(--up)}.chip.down{color:var(--down)}.chip.new{color:var(--new)}
+.empty{margin:28px 0;padding:22px;border:1px dashed var(--line);border-radius:var(--radius);text-align:center;color:var(--muted)}
+.more{display:block;margin:14px auto 0;height:46px;padding:0 22px;border:1px solid var(--accent);border-radius:var(--radius);background:none;color:var(--ink);cursor:pointer;font-weight:600}
+.foot{padding-block:26px 40px;color:var(--muted);font-size:.88rem}
+.print-only{display:none}
+
+/* موبایل: هر ردیف یک کارت */
+@media (max-width:680px){
+  .tbl thead{display:none}
+  .tbl,.tbl tbody{display:block}
+  .tbl tr{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:0 0 10px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--row,var(--accent));border-radius:var(--radius)}
+  .tbl td,.tbl td.edge,.tbl td.last{display:block;padding:0;background:none;border:0;border-radius:0}
+  .tbl td::before{content:attr(data-label);display:block;font-size:.74rem;color:var(--muted);line-height:1.5}
+  .tbl td.price{grid-column:1 / -1;padding-top:8px;border-top:1px solid var(--line);font-size:1.3rem}
+  .tbl td.price::before{font-size:.74rem;font-weight:400}
+  .tbl td.chg:empty{display:none}
+  .bar .wrap{gap:8px}
+}
+
+/* چاپ */
+@media print{
+  :root{--bg:#fff;--surface:#fff;--ink:#000;--muted:#444;--line:#bbb}
+  body{font-size:10pt}
+  .top .sub,.brands,.bar,.more,.banner,.foot .contact{display:none!important}
+  .print-only{display:block;margin:0 0 6pt}
+  .tbl{border-spacing:0}
+  .tbl td{padding:5pt 8pt;border-radius:0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tbl tr{break-inside:avoid}
+  .tbl thead{display:table-header-group}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1 id="siteTitle">لیست قیمت محصولات</h1>
+    <p class="sub" id="siteSub"></p>
+    <p class="updated" id="updated" aria-live="polite">در حال بارگذاری قیمت‌ها…</p>
+    <p class="print-only" id="printInfo"></p>
+    <div id="banner"></div>
+  </div>
+</header>
+
+<section class="wrap brands" aria-label="انتخاب برند">
+  <div class="strip" id="brandTabs" role="tablist" aria-label="برندها"></div>
+</section>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="search">
+      <label class="sr" for="q">جستجو در کد و سایز</label>
+      <input id="q" type="search" inputmode="search" autocomplete="off" placeholder="جستجوی کد یا سایز، مثلاً ۲۵ یا زانو">
+    </div>
+    <div class="seg" role="group" aria-label="واحد قیمت">
+      <button type="button" data-unit="rial" aria-pressed="true">ریال</button>
+      <button type="button" data-unit="toman" aria-pressed="false">تومان</button>
+    </div>
+    <button type="button" class="btn" id="printBtn">چاپ یا ذخیره PDF</button>
+    <a class="btn" id="callBtn" href="#" hidden>تماس</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <p class="count" id="count" aria-live="polite"></p>
+  <div id="results"></div>
+</main>
+
+<footer class="wrap foot" id="foot"></footer>
+
+<script>
+(function () {
+  "use strict";
+  var STEP = 150;
+  var $ = function (id) { return document.getElementById(id); };
+  var nf = new Intl.NumberFormat("fa-IR", { maximumFractionDigits: 1 });
+  var state = { data: null, all: [], brand: "all", q: "", unit: "rial", sort: null, dir: 1, limit: STEP, saved: STEP };
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function norm(s) {
+    return String(s == null ? "" : s).toLowerCase()
+      .replace(/[۰-۹]/g, function (d) { return d.charCodeAt(0) - 1776; })
+      .replace(/[٠-٩]/g, function (d) { return d.charCodeAt(0) - 1632; })
+      .replace(/ي/g, "ی").replace(/ك/g, "ک");
+  }
+  function lum(hex) {
+    var h = String(hex || "").replace("#", "");
+    if (h.length !== 6) return 0;
+    return 0.299 * parseInt(h.slice(0, 2), 16) + 0.587 * parseInt(h.slice(2, 4), 16) + 0.114 * parseInt(h.slice(4, 6), 16);
+  }
+  function isNum(v) { return typeof v === "number" && isFinite(v); }
+  function money(v) {
+    if (!isNum(v) || v <= 0) return null;
+    return nf.format(state.unit === "toman" ? v / 10 : v);
+  }
+  function unitLabel() { return state.unit === "toman" ? "تومان" : "ریال"; }
+
+  /* ---------- بارگذاری ---------- */
+  function getJSON(url) {
+    return fetch(url, { cache: "no-cache" }).then(function (r) {
+      if (!r.ok) throw new Error(url + " " + r.status);
+      return r.json();
+    });
+  }
+
+  function start() {
+    getJSON("config.json").catch(function () { return {}; }).then(applyConfig);
+    getJSON("data/prices.json").then(function (d) {
+      state.data = d;
+      state.all = [];
+      d.brands.forEach(function (b) {
+        b.products.forEach(function (p) {
+          var extra = p.extra || {};
+          state.all.push({
+            p: p, b: b,
+            hay: norm([b.name, p.code, p.size].concat(Object.keys(extra).map(function (k) { return extra[k]; })).join(" "))
+          });
+        });
+      });
+      header(d);
+      tabs();
+      render();
+    }).catch(function () {
+      $("updated").textContent = "";
+      $("results").innerHTML = '<div class="empty">فایل قیمت‌ها بارگذاری نشد. صفحه را دوباره باز کنید. اگر آن را مستقیم از روی کامپیوتر باز کرده‌اید، از آدرس اینترنتی یا یک وب‌سرور محلی استفاده کنید.</div>';
+    });
+  }
+
+  function applyConfig(c) {
+    if (c.title) { $("siteTitle").textContent = c.title; document.title = c.title; }
+    if (c.subtitle) $("siteSub").textContent = c.subtitle;
+    var foot = $("foot"), html = "";
+    if (c.note) html += "<p>" + esc(c.note) + "</p>";
+    if (c.phone) {
+      var a = $("callBtn");
+      a.hidden = false;
+      a.href = "tel:" + String(c.phone).replace(/[^\d+]/g, "");
+      a.textContent = "تماس: " + c.phone;
+    }
+    foot.innerHTML = html;
+  }
+
+  function header(d) {
+    var faTime = d.time ? String(d.time).replace(/\d/g, function (x) { return "۰۱۲۳۴۵۶۷۸۹".charAt(+x); }) : "";
+    var when = d.date_jalali_text ? "<b>" + esc(d.date_jalali_text) + "</b>" + (faTime ? "، ساعت " + esc(faTime) : "") : "";
+    $("updated").innerHTML = when ? "آخرین به‌روزرسانی قیمت‌ها: " + when : "";
+    if (d.sample) {
+      $("banner").innerHTML = '<p class="banner">این صفحه فعلاً داده نمونه نشان می‌دهد و قیمت‌ها واقعی نیست. بعد از اولین به‌روزرسانی خودکار، قیمت‌های واقعی جایگزین می‌شود.</p>';
+    } else {
+      var stale = d.brands.filter(function (b) { return b.stale; });
+      if (stale.length) {
+        $("banner").innerHTML = '<p class="banner">قیمت ' + esc(stale.map(function (b) { return b.name; }).join("، ")) +
+          " در به‌روزرسانی اخیر دریافت نشد و قیمت‌های روز قبل نمایش داده می‌شود.</p>";
+      }
+    }
+  }
+
+  /* ---------- برندها ---------- */
+  function tabs() {
+    var h = '<button class="brand" role="tab" data-brand="all" aria-selected="true"><span class="logo">همه</span><span class="nm">همه برندها</span></button>';
+    state.data.brands.forEach(function (b) {
+      var fg = lum(b.color) > 170 ? "#1F1F1F" : "#FFFFFF";
+      h += '<button class="brand" role="tab" data-brand="' + esc(b.id) + '" aria-selected="false" style="--c:' + esc(b.color) + ";--b:" + esc(b.color) + ";--bt:" + fg + '">' +
+        '<span class="logo">' + (b.logo ? '<img src="' + esc(b.logo) + '" alt="" data-fb="' + esc(b.name) + '">' : esc(b.name)) + "</span>" +
+        '<span class="nm">' + esc(b.name) + "</span></button>";
+    });
+    $("brandTabs").innerHTML = h;
+    Array.prototype.forEach.call($("brandTabs").querySelectorAll("img"), function (img) {
+      img.addEventListener("error", function () { img.replaceWith(document.createTextNode(img.getAttribute("data-fb"))); });
+    });
+  }
+
+  /* ---------- نمایش ---------- */
+  function cmp(a, b, key) {
+    if (key === "price") {
+      var x = isNum(a.p.price) ? a.p.price : Infinity, y = isNum(b.p.price) ? b.p.price : Infinity;
+      return x - y;
+    }
+    return String(a.p[key] == null ? "" : a.p[key]).localeCompare(String(b.p[key] == null ? "" : b.p[key]), "fa", { numeric: true });
+  }
+
+  function render() {
+    var tokens = norm(state.q).split(/\s+/).filter(Boolean);
+    var list = state.all.filter(function (r) {
+      if (state.brand !== "all" && String(r.b.id) !== String(state.brand)) return false;
+      return tokens.every(function (t) { return r.hay.indexOf(t) !== -1; });
+    });
+    if (state.sort) {
+      list = list.slice().sort(function (a, b) { return state.dir * cmp(a, b, state.sort); });
+    }
+    var brand = state.data.brands.filter(function (b) { return String(b.id) === String(state.brand); })[0];
+    $("count").textContent = nf.format(list.length) + " محصول" + (brand ? " از " + brand.name : "");
+    $("printInfo").textContent = (brand ? brand.name + " — " : "") + "قیمت‌ها به " + unitLabel() + " — " + (state.data.date_jalali_text || "");
+
+    if (!list.length) {
+      $("results").innerHTML = '<div class="empty">محصولی با این مشخصات پیدا نشد. عبارت کوتاه‌تری بنویسید یا برند را روی «همه برندها» بگذارید.</div>';
+      return;
+    }
+
+    var shown = list.slice(0, state.limit);
+    var showBrand = state.brand === "all";
+    var hasCarton = shown.some(function (r) { return r.p.carton != null && r.p.carton !== ""; });
+    var hasChg = shown.some(function (r) { return r.p.prev || r.p.added; });
+    var freq = {};
+    shown.forEach(function (r) { Object.keys(r.p.extra || {}).forEach(function (k) { freq[k] = (freq[k] || 0) + 1; }); });
+    var extras = Object.keys(freq).sort(function (a, b) { return freq[b] - freq[a]; }).slice(0, 3);
+
+    function th(label, key) {
+      if (!key) return "<th>" + label + "</th>";
+      var s = state.sort === key ? (state.dir === 1 ? "ascending" : "descending") : "none";
+      return '<th aria-sort="' + s + '"><button class="sortbtn" data-sort="' + key + '">' + label + "</button></th>";
+    }
+    var head = "<tr>" + (showBrand ? th("برند") : "") + th("کد کالا", "code") + th("سایز", "size") +
+      (hasCarton ? th("تعداد در کارتن") : "") +
+      extras.map(function (k) { return th(esc(k.replace(/_/g, " "))); }).join("") +
+      th("قیمت (" + unitLabel() + ")", "price") + (hasChg ? th("تغییر") : "") + "</tr>";
+
+    var rows = shown.map(function (r) {
+      var p = r.p, cells = [];
+      function td(label, cls, val) { cells.push({ label: label, cls: cls, val: val }); }
+      if (showBrand) td("برند", "", esc(r.b.name));
+      td("کد کالا", "code", esc(p.code));
+      td("سایز", "", esc(p.size));
+      if (hasCarton) td("تعداد در کارتن", "", isNum(p.carton) ? nf.format(p.carton) : esc(p.carton));
+      extras.forEach(function (k) { td(esc(k.replace(/_/g, " ")), "", esc((p.extra || {})[k])); });
+      var m = money(p.price);
+      td("قیمت (" + unitLabel() + ")", "price", m ? m + "<small>" + unitLabel() + "</small>" : (isNum(p.price) || !p.price ? "استعلام" : esc(p.price)));
+      if (hasChg) {
+        var c = "";
+        if (isNum(p.prev) && isNum(p.price) && p.prev > 0) {
+          var pct = (p.price - p.prev) / p.prev * 100, up = pct > 0;
+          c = '<span class="chip ' + (up ? "up" : "down") + '" title="قیمت قبلی: ' + esc(nf.format(p.prev)) + ' ریال">' +
+            (up ? "▲ " : "▼ ") + esc(nf.format(Math.abs(Math.round(pct * 10) / 10))) + "٪</span>";
+        } else if (p.added) {
+          c = '<span class="chip new">جدید</span>';
+        }
+        td("تغییر", "chg", c);
+      }
+      cells[0].cls = (cells[0].cls + " edge").trim();
+      cells[cells.length - 1].cls = (cells[cells.length - 1].cls + " last").trim();
+      return '<tr style="--row:' + esc(r.b.color) + '">' + cells.map(function (c) {
+        return '<td data-label="' + c.label + '" class="' + c.cls + '">' + c.val + "</td>";
+      }).join("") + "</tr>";
+    }).join("");
+
+    var more = list.length > shown.length
+      ? '<button class="more" id="more">نمایش ' + nf.format(Math.min(STEP, list.length - shown.length)) + " مورد بعدی (" + nf.format(list.length - shown.length) + " مورد باقی‌مانده)</button>" : "";
+    $("results").innerHTML = '<table class="tbl"><thead>' + head + "</thead><tbody>" + rows + "</tbody></table>" + more;
+  }
+
+  /* ---------- رویدادها ---------- */
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-brand],[data-unit],[data-sort],#more,#printBtn");
+    if (!t) return;
+    if (t.hasAttribute("data-brand")) {
+      state.brand = t.getAttribute("data-brand");
+      state.limit = STEP;
+      Array.prototype.forEach.call($("brandTabs").children, function (b) {
+        b.setAttribute("aria-selected", b === t ? "true" : "false");
+      });
+      var b = state.data.brands.filter(function (x) { return String(x.id) === String(state.brand); })[0];
+      document.documentElement.style.setProperty("--accent", b ? b.color : "");
+      if (!b) document.documentElement.style.removeProperty("--accent");
+      render();
+    } else if (t.hasAttribute("data-unit")) {
+      state.unit = t.getAttribute("data-unit");
+      Array.prototype.forEach.call(document.querySelectorAll("[data-unit]"), function (b) {
+        b.setAttribute("aria-pressed", b === t ? "true" : "false");
+      });
+      render();
+    } else if (t.hasAttribute("data-sort")) {
+      var k = t.getAttribute("data-sort");
+      if (state.sort === k) { if (state.dir === 1) state.dir = -1; else { state.sort = null; state.dir = 1; } }
+      else { state.sort = k; state.dir = 1; }
+      render();
+    } else if (t.id === "more") {
+      state.limit += STEP;
+      render();
+    } else if (t.id === "printBtn") {
+      window.print();
+    }
+  });
+
+  var timer;
+  $("q").addEventListener("input", function (e) {
+    clearTimeout(timer);
+    var v = e.target.value;
+    timer = setTimeout(function () { state.q = v; state.limit = STEP; render(); }, 120);
+  });
+
+  window.addEventListener("beforeprint", function () { state.saved = state.limit; state.limit = Infinity; if (state.data) render(); });
+  window.addEventListener("afterprint", function () { state.limit = state.saved; if (state.data) render(); });
+
+  start();
+})();
+</script>
+</body>
+</html>
