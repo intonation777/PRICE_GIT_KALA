@@ -2,10 +2,13 @@ name: به‌روزرسانی قیمت‌ها
 
 on:
   schedule:
-    - cron: "0 2 * * *"      # هر روز 02:00 به وقت UTC (حدود 05:30 تهران)
+    - cron: "30 7 * * *"     # هر روز 07:30 به وقت UTC (11:00 ظهر تهران)
   workflow_dispatch:          # اجرای دستی از تب Actions
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/data/**"
+      - "docs/logos/**"
 
 permissions:
   contents: write
@@ -17,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -26,7 +29,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
       - run: pip install -r requirements.txt
 
@@ -38,7 +40,9 @@ jobs:
         continue-on-error: true
         run: python update_data.py
 
-      - name: ذخیره تغییرات
+      # ذخیره در مخزن اختیاری است؛ خطای آن نباید جلوی انتشار صفحه را بگیرد
+      - name: ذخیره تغییرات در مخزن
+        continue-on-error: true
         run: |
           git config user.name "price-bot"
           git config user.email "price-bot@users.noreply.github.com"
@@ -60,12 +64,12 @@ jobs:
       - name: خطا در دریافت قیمت‌ها
         if: ${{ steps.upd.outcome == 'failure' }}
         run: |
-          echo "دریافت قیمت‌ها ناموفق بود؛ صفحه با آخرین قیمت‌های ذخیره‌شده منتشر می‌شود."
+          echo "دریافت قیمت‌ها ناموفق بود؛ صفحه با آخرین قیمت‌های ذخیره‌شده منتشر شد."
           exit 1
 
   deploy:
-    needs: update
-    if: ${{ !cancelled() }}
+    needs: build
+    if: ${{ always() && needs.build.result != 'skipped' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
