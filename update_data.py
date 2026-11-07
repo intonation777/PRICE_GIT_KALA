@@ -51,7 +51,11 @@ def fetch_page(bid, page):
     for attempt in range(1, 4):
         try:
             r = requests.post(sp.URL, json=payload, headers=sp.HEADERS, timeout=(10, 120))
+            if r.status_code == 204:
+                return None  # سرور می‌گوید برای این برند داده‌ای ندارد؛ تلاش دوباره فایده‌ای ندارد
             if r.status_code != 200:
+                if 400 <= r.status_code < 500 and r.status_code != 429:
+                    raise PermissionError(f"HTTP {r.status_code}: {r.text[:120]!r}")
                 raise RuntimeError(f"HTTP {r.status_code}: {r.text[:120]!r}")
             if not r.text.strip():
                 raise RuntimeError("پاسخ خالی")
@@ -59,6 +63,8 @@ def fetch_page(bid, page):
                 return r.json()
             except ValueError:
                 raise RuntimeError(f"پاسخ JSON نبود: {r.text[:120]!r}")
+        except PermissionError as e:  # خطای ۴xx: تکرار فایده ندارد
+            raise RuntimeError(str(e))
         except Exception as e:  # noqa: BLE001
             last = e
             time.sleep(2 * attempt)
@@ -74,6 +80,8 @@ def fetch_brand_all(bid):
         except RuntimeError:
             if page == 1:
                 raise
+            break
+        if data is None:
             break
         rows, imgs = sp.extract_rows(data)
         new = 0
@@ -180,7 +188,8 @@ def main():
             name = sp.BRANDS[bid][0]
             try:
                 results[bid] = fut.result()
-                print(f"✓ {name}: {len(results[bid][0])} محصول")
+                n = len(results[bid][0])
+                print(f"✓ {name}: {n} محصول" if n else f"○ {name}: سرور داده‌ای برنگرداند (۲۰۴ یا خالی)")
             except Exception as e:  # noqa: BLE001
                 errors[bid] = str(e)
                 print(f"✗ {name}: {e}", file=sys.stderr)
