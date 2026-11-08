@@ -1,5 +1,5 @@
-{"sample":false,"generated_at":"2026-11-07T23:09:35+03:30","date_gregorian":"2026-11-07","date_jalali":"1405/08/16","date_jalali_text":"۱۶ آبان ۱۴۰۵","time":"23:09","brands":[
-{"id":4,"name":"آذین لوله","color":"#0054A6","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-4.png","updated":"2026-11-07","stale":false,"count":331,"products":[
+{"sample":false,"generated_at":"2026-11-08T17:57:59+03:30","date_gregorian":"2026-11-08","date_jalali":"1405/08/17","date_jalali_text":"۱۷ آبان ۱۴۰۵","time":"17:57","brands":[
+{"id":4,"name":"آذین لوله","color":"#0054A6","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-4.png","updated":"2026-11-08","stale":false,"count":331,"products":[
 {"code":"لوله های تک لایه PP-RCT","size":"","carton":null,"price":null},
 {"code":"819161020","size":"","carton":null,"price":1718970,"extra":{"اندازه_میلیمتر_اینچ":20,"تعداد_در_کارتن_متراژ_در_بسته":140}},
 {"code":"819161025","size":"","carton":null,"price":2703690,"extra":{"اندازه_میلیمتر_اینچ":25,"تعداد_در_کارتن_متراژ_در_بسته":100}},
@@ -332,7 +332,7 @@
 {"code":"855321839","size":"","carton":null,"price":3756830,"extra":{"اندازه_میلیمتر_اینچ":90,"تعداد_در_کارتن_متراژ_در_بسته":15}},
 {"code":"855321843","size":"","carton":null,"price":4920960,"extra":{"اندازه_میلیمتر_اینچ":110,"تعداد_در_کارتن_متراژ_در_بسته":10}}
 ]},
-{"id":5,"name":"نیوپایپ","color":"#D61A20","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-5.PNG","updated":"2026-11-07","stale":false,"count":687,"products":[
+{"id":5,"name":"نیوپایپ","color":"#D61A20","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-5.PNG","updated":"2026-11-08","stale":false,"count":687,"products":[
 {"code":"لوله پنج لایه PEX-AL-PEX","size":"","carton":null,"price":null},
 {"code":"813121016","size":"","carton":"رولی","price":1369830,"extra":{"اندازه_میلیمتر_اینچ":16,"تعداد_در_جعبهمتر":200}},
 {"code":"813121020","size":"","carton":"رولی","price":2320780,"extra":{"اندازه_میلیمتر_اینچ":20,"تعداد_در_جعبهمتر":150}},
@@ -1021,7 +1021,7 @@
 {"code":"855462309","size":"","carton":"-","price":672100,"extra":{"اندازه_میلیمتر_اینچ":25,"تعداد_در_جعبه":50}},
 {"code":"855462313","size":"","carton":"-","price":1262470,"extra":{"اندازه_میلیمتر_اینچ":32,"تعداد_در_جعبه":40}}
 ]},
-{"id":6,"name":"دینا پلیمر","color":"#51B848","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-6.png","updated":"2026-11-07","stale":false,"count":542,"products":[
+{"id":6,"name":"دینا پلیمر","color":"#51B848","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-6.png","updated":"2026-11-08","stale":false,"count":542,"products":[
 {"code":"825331050","size":"","carton":null,"price":null,"extra":{"شرح_سایز":50,"متراژ":"شاخه ای-6","قیمت_هر_متربا_مالیات_1405.07.04":909370}},
 {"code":"825331063","size":"","carton":null,"price":null,"extra":{"شرح_سایز":63,"متراژ":"شاخه ای-6","قیمت_هر_متربا_مالیات_1405.07.04":1264230}},
 {"code":"825331075","size":"","carton":null,"price":null,"extra":{"شرح_سایز":75,"متراژ":"شاخه ای-6","قیمت_هر_متربا_مالیات_1405.07.04":1745810}},
@@ -1565,7 +1565,7 @@
 {"code":"85600","size":"","carton":null,"price":null,"extra":{"شرح_سایز":110,"متراژ":50,"قیمت_هر_متربا_مالیات_1405.07.04":686800}},
 {"code":"85700","size":"","carton":null,"price":null,"extra":{"شرح_سایز":125,"متراژ":50,"قیمت_هر_متربا_مالیات_1405.07.04":757100}}
 ]},
-{"id":7,"name":"نیوفلکس","color":"#29BDBE","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-7.png","updated":"2026-11-07","stale":false,"count":413,"products":[
+{"id":7,"name":"نیوفلکس","color":"#29BDBE","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-7.png","updated":"2026-11-08","stale":false,"count":413,"products":[
 {"code":"لوله فاضلابی پوشفیت یکسرسوکت گروه B","size":null,"carton":null,"price":null},
 {"code":"837121050","size":"150-50","carton":15,"price":1233540},
 {"code":"837141050","size":"250-50","carton":70,"price":1609960},
@@ -1980,7 +1980,7 @@
 {"code":"زانو پوشفیت کم صدا 87 درجه ونت دار","size":null,"carton":null,"price":null},
 {"code":"855361814","size":"110*50","carton":15,"price":7187510}
 ]},
-{"id":8,"name":"سپهرفوم","color":"#FDAF17","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-8.PNG","updated":"2026-11-07","stale":false,"count":667,"products":[
+{"id":8,"name":"سپهرفوم","color":"#FDAF17","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-8.PNG","updated":"2026-11-08","stale":false,"count":667,"products":[
 {"code":"فوم لوله ای EPE","size":"","carton":null,"price":null},
 {"code":"879371012","size":"","carton":null,"price":null,"extra":{"سایز_mm_سایز_اینچ":"( 3/8 ) 12","مشخصات":"سفید","طول_در_بستهمتر":100,"قیمت__ریال":127160}},
 {"code":"879371016","size":"","carton":null,"price":null,"extra":{"سایز_mm_سایز_اینچ":"( 5/8 ) 16","مشخصات":"سفید","طول_در_بستهمتر":100,"قیمت__ریال":136290}},
@@ -2649,7 +2649,7 @@
 {"code":"#N/A","size":"","carton":null,"price":null,"extra":{"سایز_mm_سایز_اینچ":"#N/A"}},
 {"code":"#N/A","size":"","carton":null,"price":null,"extra":{"سایز_mm_سایز_اینچ":"#N/A"}}
 ]},
-{"id":10,"name":"SGP","color":"#D71920","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-10.png","updated":"2026-11-07","stale":false,"count":120,"products":[
+{"id":10,"name":"SGP","color":"#D71920","logo":"https://svcpool.sgpco.com/file/SgpProduct/Brand/br-10.png","updated":"2026-11-08","stale":false,"count":120,"products":[
 {"code":"پروفیل های فلزی","size":"","carton":null,"price":null},
 {"code":"807221010","size":"","carton":4,"price":12276660,"extra":{"اندازه_میلیمتر_اینچ":"پروفیلC شکل - 49x27x1.5 mm","تعداد_در_جعبهمتر":"2 متری"}},
 {"code":"807221015","size":"","carton":4,"price":10230550,"extra":{"اندازه_میلیمتر_اینچ":"پروفیلC شکل- 35x25x1.5mm","تعداد_در_جعبهمتر":"2 متری"}},
